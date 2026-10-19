@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sabor Encanto | Pedido online</title>
+<style>
+:root{--green:#176b45;--lime:#dff3e5;--cream:#fffaf0;--ink:#202820;--orange:#ef9c39;--muted:#66736a}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;color:var(--ink);background:#f5f7f4}
+header{background:var(--green);color:white;padding:16px 5%;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{font-size:1.25rem;font-weight:800}.brand small{display:block;font-size:.75rem;font-weight:400;margin-top:3px}
+select,button,input{font:inherit;border-radius:10px;padding:10px;border:1px solid #cbd5cc}button{cursor:pointer;border:0;background:var(--green);color:white;font-weight:700}button.secondary{background:white;color:var(--green);border:1px solid var(--green)}
+main{max-width:1100px;margin:24px auto;padding:0 16px;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(270px,1fr);gap:22px}
+.hero{background:linear-gradient(120deg,#dff3e5,#fff1d9);border-radius:18px;padding:24px;margin-bottom:18px}.hero h1{margin:0 0 8px;font-size:clamp(1.5rem,4vw,2.3rem)}.hero p{margin:0;color:#425449}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 16px}.filters button{background:#e5eee7;color:var(--green)}.filters button.active{background:var(--green);color:white}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.product,.panel{background:white;border-radius:16px;padding:16px;box-shadow:0 3px 14px #163b2010}.emoji{font-size:2.6rem;background:var(--cream);border-radius:12px;padding:12px;text-align:center}.product h3{margin:12px 0 5px}.product p{color:var(--muted);font-size:.9rem;min-height:35px}.product-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}.price{font-weight:800}
+.panel{align-self:start;position:sticky;top:12px}.panel h2{margin-top:0}.cart-row{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid #e7ece7;padding:10px 0}.cart-row small{display:block;color:var(--muted)}.total{display:flex;justify-content:space-between;font-size:1.1rem;font-weight:800;margin:16px 0}
+.notice{font-size:.83rem;color:#45564a;background:#f1f7f2;border-radius:10px;padding:12px;margin:12px 0}.wide{width:100%;margin-top:8px}.hidden{display:none!important}.steps{display:flex;gap:6px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin-bottom:14px}.steps span{padding:6px 8px;background:#f1f4f1;border-radius:8px}
+input[type=text],input[type=email],input[type=tel]{width:100%;margin:6px 0 10px}.field-label{font-size:.9rem;font-weight:700}.message{padding:12px;background:var(--lime);border-radius:10px;margin-top:12px}
+footer{text-align:center;color:var(--muted);padding:24px;font-size:.82rem}
+@media(max-width:760px){main{grid-template-columns:1fr;margin-top:14px}.panel{position:static;order:-1}.products{grid-template-columns:1fr 1fr}.hero{padding:18px}}
+@media(max-width:420px){.products{grid-template-columns:1fr}header{align-items:flex-start}header select{width:100%}}
+</style>
+</head>
+<body>
+<header><div class="brand">🥪 Sabor Encanto <small>Seu intervalo com mais sabor</small></div>
+<label>Unidade:
+<select id="unit"><option value="Centro">Centro</option><option value="Jardim">Jardim</option><option value="Estação">Estação</option></select></label></header>
+<main><section>
+<div class="hero"><h1>Peça do seu jeito.</h1><p>Confira o cardápio da unidade, monte seu pedido e acompanhe cada etapa.</p></div>
+<div class="steps"><span>1. Cardápio</span><span>2. Sacola</span><span>3. Identificação</span><span>4. Pagamento simulado</span></div>
+<div class="filters" id="filters"><button class="active" data-cat="Todos">Todos</button><button data-cat="Lanches">Lanches</button><button data-cat="Bebidas">Bebidas</button><button data-cat="Combos">Combos</button></div>
+<div class="products" id="products"></div></section>
+<aside class="panel"><div id="cartView"><h2>🛍️ Sua sacola</h2><div id="cartItems">Adicione um item para começar.</div><div class="total"><span>Total</span><span id="total">R$ 0,00</span></div><div class="notice">⭐ Fidelidade: a cada R$ 10 em compras, você acumula 1 ponto. Saldo demonstrativo: <b id="points">0 ponto(s)</b>.</div><button class="wide" id="checkout">Continuar pedido</button></div>
+<div id="checkoutView" class="hidden"><h2>Finalizar pedido</h2><label class="field-label">Seu nome</label><input id="customer" type="text" placeholder="Nome completo"><label class="field-label">E-mail</label><input id="email" type="email" placeholder="voce@email.com"><label class="field-label">Retirada</label><select id="pickup" style="width:100%;margin:6px 0 12px"><option>Retirar no balcão</option><option>Retirar no totem</option></select>
+<label style="display:block;font-size:.88rem;margin:8px 0"><input id="consent" type="checkbox"> Li o aviso de privacidade e concordo com o uso dos dados necessários para processar este pedido.</label><div class="notice">Usamos nome e e-mail apenas para identificar o pedido e enviar atualizações. Não solicitamos dados de cartão neste protótipo. Consulte a política de privacidade da unidade.</div>
+<label class="field-label">Forma de pagamento</label><select id="pay" style="width:100%;margin:6px 0 10px"><option>Pix (simulação)</option><option>Cartão (simulação)</option><option>Pagamento no balcão</option></select><button class="wide" id="payBtn">Enviar solicitação de pagamento</button><button class="wide secondary" id="back">Voltar à sacola</button><div id="feedback"></div></div>
+<div id="statusView" class="hidden"><h2>✅ Pedido recebido</h2><p id="orderNumber"></p><p id="statusText">Pagamento em processamento (simulado).</p><div class="notice">Este protótipo não realiza cobranças reais. Em produção, o retorno seria recebido de um provedor externo por integração segura.</div><button class="wide" id="advance">Simular atualização: pedido em preparo</button><button class="wide secondary" id="newOrder">Novo pedido</button></div></aside></main>
+<footer>Protótipo acadêmico com dados fictícios. Não realiza pagamento real nem envia informações a servidores.</footer>
+<script>
+const menu=[
+{id:1,name:"X-salada",desc:"Pão, hambúrguer, queijo, alface e tomate.",price:18,cat:"Lanches",emoji:"🍔"},
+{id:2,name:"Sanduíche natural",desc:"Frango, cenoura e folhas frescas.",price:15,cat:"Lanches",emoji:"🥪"},
+{id:3,name:"Suco de laranja",desc:"Suco natural de laranja preparado na hora, 300 ml.",price:7,cat:"Bebidas",emoji:"🍊"},
+{id:4,name:"Água mineral",desc:"Garrafa de 500 ml.",price:4,cat:"Bebidas",emoji:"💧"},
+{id:7,name:"Guaraná",desc:"Refrigerante de guaraná, lata de 350 ml.",price:6,cat:"Bebidas",emoji:"🥤"},
+{id:5,name:"Combo Encanto",desc:"X-salada + suco de laranja.",price:23,cat:"Combos",emoji:"🍔🥤"},
+{id:6,name:"Combo leve",desc:"Sanduíche natural + água.",price:17,cat:"Combos",emoji:"🥪💧"}];
+let cart=[],category="Todos",orderStage=0;
+const money=n=>n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+function renderMenu(){let unit=document.querySelector("#unit").value;document.querySelector("#products").innerHTML=menu.filter(p=>category==="Todos"||p.cat===category).map(p=>`<article class="product"><div class="emoji">${p.emoji}</div><h3>${p.name}</h3><p>${p.desc}</p><div class="product-foot"><span class="price">${money(p.price+(unit==="Jardim"&&p.id===1?1:0))}</span><button onclick="add(${p.id})" aria-label="Adicionar ${p.name}">Adicionar +</button></div></article>`).join("")}
+function add(id){let p=menu.find(x=>x.id===id);let unit=document.querySelector("#unit").value;let price=p.price+(unit==="Jardim"&&id===1?1:0);let item=cart.find(x=>x.id===id);if(item)item.qty++;else cart.push({...p,price,qty:1});renderCart()}
+function renderCart(){let box=document.querySelector("#cartItems");box.innerHTML=cart.length?cart.map(p=>`<div class="cart-row"><div><b>${p.name}</b><small>${money(p.price)} × ${p.qty}</small></div><div><b>${money(p.price*p.qty)}</b><br><button class="secondary" style="padding:4px 8px;color:#176b45" onclick="removeItem(${p.id})">−</button> <button style="padding:4px 8px" onclick="add(${p.id})">+</button></div></div>`).join(""):"Adicione um item para começar.";let total=cart.reduce((s,p)=>s+p.price*p.qty,0);document.querySelector("#total").textContent=money(total);document.querySelector("#points").textContent=Math.floor(total/10)+" ponto(s)";document.querySelector("#checkout").disabled=!cart.length}
+function removeItem(id){let i=cart.find(x=>x.id===id);if(i.qty>1)i.qty--;else cart=cart.filter(x=>x.id!==id);renderCart()}
+document.querySelectorAll("#filters button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#filters button").forEach(x=>x.classList.remove("active"));b.classList.add("active");category=b.dataset.cat;renderMenu()});
+document.querySelector("#unit").onchange=()=>{renderMenu();cart=[];renderCart()};
+document.querySelector("#checkout").onclick=()=>{document.querySelector("#cartView").classList.add("hidden");document.querySelector("#checkoutView").classList.remove("hidden")};
+document.querySelector("#back").onclick=()=>{document.querySelector("#checkoutView").classList.add("hidden");document.querySelector("#cartView").classList.remove("hidden")};
+document.querySelector("#payBtn").onclick=()=>{let name=document.querySelector("#customer").value.trim(),email=document.querySelector("#email").value.trim(),consent=document.querySelector("#consent").checked,fb=document.querySelector("#feedback");if(!name||!email.includes("@")){fb.className="message";fb.textContent="Confira os campos: informe seu nome e um e-mail válido.";return}if(!consent){fb.className="message";fb.textContent="Para continuar, leia e aceite o aviso de privacidade.";return}document.querySelector("#checkoutView").classList.add("hidden");document.querySelector("#statusView").classList.remove("hidden");document.querySelector("#orderNumber").textContent="Pedido SE-"+Math.floor(1000+Math.random()*9000)+" • Unidade "+document.querySelector("#unit").value;document.querySelector("#statusText").textContent=document.querySelector("#pay").value==="Pagamento no balcão"?"Pedido confirmado. Pagamento previsto no balcão.":"Solicitação encaminhada (simulação). Aguardando retorno do provedor externo.";};
+document.querySelector("#advance").onclick=()=>{document.querySelector("#statusText").textContent="Pedido em preparo. Quando estiver pronto, o status poderá ser atualizado para retirada.";document.querySelector("#advance").textContent="Status atualizado ✓";document.querySelector("#advance").disabled=true};
+document.querySelector("#newOrder").onclick=()=>{cart=[];renderCart();document.querySelector("#statusView").classList.add("hidden");document.querySelector("#cartView").classList.remove("hidden");document.querySelector("#advance").disabled=false;document.querySelector("#advance").textContent="Simular atualização: pedido em preparo";document.querySelector("#customer").value="";document.querySelector("#email").value="";document.querySelector("#consent").checked=false};
+renderMenu();renderCart();
+</script></body></html>
